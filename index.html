@@ -3,21 +3,89 @@ layout: default
 ---
 
 <div class="home">
+    <p>WellRESTed is a library for creating RESTful APIs and websites in PHP
+        that provides abstraction for HTTP messages, a powerful middleware
+        system, and a flexible router.</p>
 
-  <h1 class="page-heading">Posts</h1>
+{% highlight php %}
+<?php
 
-  <ul class="post-list">
-    {% for post in site.posts %}
-      <li>
-        <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+use WellRESTed\Message\Stream;
+use WellRESTed\Server;
 
-        <h2>
-          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-        </h2>
-      </li>
-    {% endfor %}
-  </ul>
+require_once('vendor/autoload.php');
 
-  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
+$hello = function ($request, $response, $next) {
+    $name = $request->getAttribute('name', 'world');
+    $response = $response
+        ->withStatus(200)
+        ->withHeader('Content-type', 'text/plain')
+        ->withBody(new Stream("Hello, ${name}!"));
+    return $next($request, $response);
+};
+
+$server = new Server();
+$server->add($server->createRouter()
+    ->register('GET', '/hello/', $hello)
+    ->register('GET', '/hello/{name}', $hello)
+);
+$server->respond();
+{% endhighlight %}
+
+    <h2>Features</h2>
+
+    <h3>PSR-7</h3>
+    <p>Requests and responses are built to the interfaces standardized by
+        <a href="http://www.php-fig.org/psr/psr-7/">PSR-7</a> making it easy to
+        share code and use components from other libraries and frameworks.</p>
+
+    <h3>Middleware</h3>
+    <p>The <a href="http://wellrested.readthedocs.io/en/latest/middleware.html">middleware</a>
+        system guides requests through a sequence of discrete components. Add
+        middleware to your <code>Server</code> for app-wide effect, or provide
+        an array of middleware for an individual route.
+
+    <h3>Router</h3>
+    <p>Use a <a href="http://wellrested.readthedocs.io/en/latest/router.html">
+        router</a> to map HTTP methods and paths to middleware. A router is a
+        type of middleware, so you can branch a large router off into
+        sub-routers.
+
+    <h3>URI Templates</h3>
+    <p>Use <a href="http://wellrested.readthedocs.io/en/latest/uri-templates.html">URI templates</a>
+        like <code>/foo/{bar}/{baz}</code>, <code>/list/{items*}</code>, or
+        <code>{/path*}</code> that match patterns of paths and provide captured
+        variables.</p>
+
+    <h3>Lazy Dispatching</h3>
+    <p>WellRESTed's dispatcher can delay instantiating middleware until its
+        needed, so even huge apps with lots of middleware classes can stay light
+        weight.</p>
+
+    <h3>Dependency Injection</h3>
+    <p>WellRESTed does not supply a DI container; it's designed to play nicely
+        with the container of your choice.</p>
+
+    <h2>Installation</h2>
+    <p>The recommended method for installing WellRESTed is to use the PHP
+        dependency manager <a href="http://getcomposer.org/">Composer</a>. Add
+        an entry for WellRESTed in your project’s composer.json file.</p>
+
+{% highlight json %}
+{
+  "require": {
+     "wellrested/wellrested": "^3.0"
+  }
+}
+{% endhighlight %}
+
+    <h2>Requirements</h2>
+    <ul>
+        <li>PHP 5.4.0</li>
+    </ul>
+
+    <h2>Documentation</h2>
+    <p>The documentaiton for WellRESTed is available at
+        <a href="http://wellrested.readthedocs.io/">http://wellrested.readthedocs.io/</a></p>
 
 </div>
