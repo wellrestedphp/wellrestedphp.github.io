@@ -1,3 +1,18 @@
 body {
     padding-top: 70px;
 }
+
+.footer-container {
+    margin-top: 30px;
+    border-top: 2px solid #ddd;
+    padding-top: 30px;
+    margin-bottom: 30px;
+}
+
+.no-break {
+    white-space: nowrap;
+}
+
+footer small {
+    font-size: 12px;
+}

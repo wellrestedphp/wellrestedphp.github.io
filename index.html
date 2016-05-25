@@ -3,6 +3,7 @@ layout: default
 ---
 
 <div class="home">
+
     <h1>WellRESTed</h1>
     <p>WellRESTed is a library for creating RESTful APIs and websites in PHP
         that provides abstraction for HTTP messages, a powerful middleware
@@ -24,20 +25,21 @@ $server
     ->add($c['errorHandler'])
     ->add($server->createRouter()
         ->register('GET', '/', $c['index'])
-        ->register('GET', '/cats/', $c['get:get'])
+        ->register('GET', '/cats/', $c['getCatsList'])
         ->register('POST', '/cats/', [
             $c['auth'],
-            $c['json']
-            $c['cat:post']
+            $c['jsonParser']
+            $c['postCat']
         ])
+        ->register('GET', '/cats/{id}', $c['getCat'])
         ->register('PUT', '/cats/{id}', [
             $c['auth'],
-            $c['json']
-            $c['cat:put']
+            $c['jsonParser']
+            $c['putCat']
         ])
         ->register('DELETE', '/cats/{id}', [
             $c['auth'],
-            $c['cat:delete']
+            $c['deleteCat']
         ])
     )
 );
@@ -50,7 +52,7 @@ $server->respond();
         <div class="col-sm-6">
             <h3>PSR-7</h3>
             <p>Requests and responses are built to the interfaces standardized by
-                <a href="http://www.php-fig.org/psr/psr-7/">PSR-7</a> making it easy to
+                <a class="no-break" href="http://www.php-fig.org/psr/psr-7/">PSR-7</a> making it easy to
                 share code and use components from other libraries and frameworks.</p>
         </div>
         <div class="col-sm-6">
@@ -58,7 +60,7 @@ $server->respond();
             <p>The <a href="http://wellrested.readthedocs.io/en/latest/middleware.html">middleware</a>
                 system guides requests through a sequence of discrete components. Add
                 middleware to your <code>Server</code> for app-wide effect, or provide
-                an array of middleware for an individual route.
+                an array of middleware for an individual route.</p>
         </div>
     </div>
     <div class="row">
@@ -81,7 +83,7 @@ $server->respond();
         <div class="col-sm-6">
             <h3>Lazy Dispatching</h3>
             <p>WellRESTed's dispatcher can delay instantiating middleware until its
-                needed, so even huge apps with lots of middleware classes can stay light
+                needed, so even huge apps with lots of middleware can stay light
                 weight.</p>
         </div>
         <div class="col-sm-6">
