@@ -52,28 +52,23 @@ $server->respond();
         <div class="col-sm-6">
             <h3>PSR-7</h3>
             <p>Requests and responses are built to the interfaces standardized by
-                <a class="no-break" href="http://www.php-fig.org/psr/psr-7/">PSR-7</a> making it easy to
+                <a class="no-break" href="https://www.php-fig.org/psr/psr-7/">PSR-7</a> making it easy to
                 share code and use components from other libraries and frameworks.</p>
         </div>
         <div class="col-sm-6">
-            <h3>Middleware</h3>
-            <p>The <a href="http://wellrested.readthedocs.io/en/latest/middleware.html">middleware</a>
-                system guides requests through a sequence of discrete components. Add
-                middleware to your <code>Server</code> for app-wide effect, or provide
-                an array of middleware for an individual route.</p>
+            <h3>PSR-15</h3>
+            <p>Build your application using handlers and middleware implementing the interfaces defined by <a class="no-break" href="https://www.php-fig.org/psr/psr-15/">PSR-15</a>.
         </div>
     </div>
     <div class="row">
         <div class="col-sm-6">
             <h3>Router</h3>
-            <p>Use a <a href="http://wellrested.readthedocs.io/en/latest/router.html">
-                router</a> to map HTTP methods and paths to middleware. A router is a
-                type of middleware, so you can branch a large router off into
-                sub-routers.
+            <p>Use a <a href="https://wellrested.readthedocs.io/en/latest/router.html">
+                router</a> to map HTTP methods and paths to hanlders, middleware, or sub-routers.
         </div>
         <div class="col-sm-6">
             <h3>URI Templates</h3>
-            <p>Use <a href="http://wellrested.readthedocs.io/en/latest/uri-templates.html">URI templates</a>
+            <p>Use <a href="https://wellrested.readthedocs.io/en/latest/uri-templates.html">URI templates</a>
                 like <code>/foo/{bar}/{baz}</code>, <code>/list/{items*}</code>, or
                 <code>{/path*}</code> that match patterns of paths and provide captured
                 variables.</p>
@@ -82,9 +77,8 @@ $server->respond();
     <div class="row">
         <div class="col-sm-6">
             <h3>Lazy Dispatching</h3>
-            <p>WellRESTed's dispatcher can delay instantiating middleware until its
-                needed, so even huge apps with lots of middleware can stay light
-                weight.</p>
+            <p>WellRESTed's dispatcher can delay instantiating handlers until they're
+                needed, so even large apps can stay light weight.</p>
         </div>
         <div class="col-sm-6">
             <h3>Dependency Injection</h3>
@@ -94,25 +88,24 @@ $server->respond();
     </div>
 
     <h2>Installation</h2>
-    <p>The recommended method for installing WellRESTed is to use the PHP
-        dependency manager <a href="http://getcomposer.org/">Composer</a>. Add
+    <p>The recommended method for installing WellRESTed is to use <a href="https://getcomposer.org/">Composer</a>. Add
         an entry for WellRESTed in your project’s composer.json file.</p>
 
 {% highlight json %}
 {
   "require": {
-     "wellrested/wellrested": "^3.0"
+     "wellrested/wellrested": "~3.1"
   }
 }
 {% endhighlight %}
 
     <h2>Requirements</h2>
     <ul>
-        <li>PHP 5.4.0</li>
+        <li>PHP 7.0</li>
     </ul>
 
     <h2>Documentation</h2>
     <p>The documentaiton for WellRESTed is available at
-        <a href="http://wellrested.readthedocs.io/">http://wellrested.readthedocs.io/</a></p>
+        <a href="https://wellrested.readthedocs.io">https://wellrested.readthedocs.io</a></p>
 
 </div>

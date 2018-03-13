@@ -13,7 +13,7 @@ description: >
     in PHP that provides abstraction for HTTP messages, a powerful middleware
     system, and a flexible router.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://wellrested.org" # the base hostname & protocol for your site
+url: "https://wellrested.org" # the base hostname & protocol for your site
 twitter_username: pjdietz
 github_username:  pjdietz
 
