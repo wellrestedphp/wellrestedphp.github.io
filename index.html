@@ -12,37 +12,48 @@ layout: default
 {% highlight php %}
 <?php
 
-use App\ServiceProvider;
-use Pimple\Container;
+namespace App;
+
+use DI;
+use Psr\Container\ContainerInterface;
 use WellRESTed\Server;
 
-require_once('vendor/autoload.php');
+require_once 'vendor/autoload.php';
 
-$c = (new Container())->register(new ServiceProvider())
+$builder = new DI\ContainerBuilder();
+$builder->addDefinitions([
+    Server::class => function (ContainerInterface $c): Server {
+        $server = new Server();
+        $server->add(ErrorMiddleware::class);
 
-$server = new Server();
-$server
-    ->add($c['errorHandler'])
-    ->add($server->createRouter()
-        ->register('GET', '/', $c['index'])
-        ->register('GET', '/cats/', $c['getCatsList'])
-        ->register('POST', '/cats/', [
-            $c['auth'],
-            $c['jsonParser']
-            $c['postCat']
-        ])
-        ->register('GET', '/cats/{id}', $c['getCat'])
-        ->register('PUT', '/cats/{id}', [
-            $c['auth'],
-            $c['jsonParser']
-            $c['putCat']
-        ])
-        ->register('DELETE', '/cats/{id}', [
-            $c['auth'],
-            $c['deleteCat']
-        ])
-    )
-);
+        $router = $server->createRouter();
+        $server->addRoute($router);
+
+        $router
+            ->register('GET', '/', HomeHandler::class)
+            ->register('GET', '/cats/', CatsListHandler::class)
+            ->register('POST', '/cats/', [
+                AuthMiddleware::class,
+                JsonMiddleware::class,
+                CatCreateHandler::class
+            ])
+            ->register('GET', '/cats/{id}', CatHandler::class)
+            ->register('PUT', '/cats/{id}', [
+                AuthMiddleware::class,
+                JsonMiddleware::class,
+                CatUpdateHandler::class
+            ])
+            ->register('DELETE', '/cats/{id}', [
+                AuthMiddleware::class,
+                CatDeleteaHandler::class
+            ]);
+
+        return $server;
+    }
+]);
+
+$container = $builder->build();
+$server = $container->get(Server::class);
 $server->respond();
 {% endhighlight %}
 
@@ -82,8 +93,9 @@ $server->respond();
         </div>
         <div class="col-sm-6">
             <h3>Dependency Injection</h3>
-            <p>WellRESTed does not supply a DI container; it's designed to play nicely
-                with the container of your choice.</p>
+            <p>WellRESTed does not supply a DI container, but can work with any
+                an any <a class="no-break" href="https://www.php-fig.org/psr/psr-11/">PSR-11</a>
+                container.</p>
         </div>
     </div>
 
@@ -94,14 +106,14 @@ $server->respond();
 {% highlight json %}
 {
   "require": {
-     "wellrested/wellrested": "~3.1"
+     "wellrested/wellrested": "^6"
   }
 }
 {% endhighlight %}
 
     <h2>Requirements</h2>
     <ul>
-        <li>PHP 7.0</li>
+        <li>PHP 8.1</li>
     </ul>
 
     <h2>Documentation</h2>
